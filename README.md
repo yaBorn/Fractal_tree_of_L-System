@@ -1,8 +1,9 @@
 # -OpenGL-Fractal_tree_of_L-System
 【C++/OpenGL】基于L文法的分形树
 
-TODO:
-  报告编写ing
+TODO:  
+  1.报告编写ing   
+  2.加入图片
 ---
 班级：数媒1803班
 姓名：杨博文
