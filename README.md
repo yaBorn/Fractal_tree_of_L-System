@@ -37,6 +37,10 @@ TODO:
 
 编写环境
 ---
+* VStudio 2017  
+* nupengl.core / nupengl.core.redist  
+* [GLUT](https://www.opengl.org/resources/libraries/glut/)  
+
 调试说明
 ---
 运行操作
