@@ -4,8 +4,8 @@
 转载与调用请保留与注释原作者yaBorn的原文地址：https://github.com/yaBorn/-OpenGL-Fractal_tree_of_L-System
 
 TODO:  
-  1.报告编写ing   
-  2.加入图片  
+  1.报告编写 OK  
+  2.加入图片ing  
   3.整理cpp
 ---
 班级：数媒1803班  
@@ -87,6 +87,9 @@ TODO:
 核心代码在<code.cpp>
 **一股脑**把bmp纹理加载代码+文法生成代码+渲染器绘制代码+输入交互代码放一起了。  
 导致code.cpp比较冗杂。有时间分割掉。  
+此处说明**文法生成**与**根据绘制分形树**  
+其余代码(纹理加载、交互、glut框架)详见<code.cpp>  
+或者源工程中的<源.cpp>  
 
 ### 思路
 1. 使用了以前图形学的代码_读取bmp生成纹理。  
@@ -103,10 +106,147 @@ TODO:
 7. 然后是一些简单的输入交互。
 
 ### 代码结构
+>纹理加载  
+>>判定2的整数次幂 power_of_two(int n) 用于LoadTexture()  
+>>读取bmp文件加载纹理 LoadTexture(const char* file_name)  
+
+>分形文法生成  
+>>预设文法生成元  
+>>根据初始元生成文法字符串 grammarIteration(string grammar, int level)  
+
+>绘制分形树  
+>>绘制树干 drawTree()  
+>>绘制叶子 drawLeaf()  
+>>根据文法绘制分形树 grammarDraw(string grammar)  
+
+>glut回调  
+>>绘制空间 在此处编写绘制代码 DrawRoom() 用于myDisplay()  
+>>显示回调函数 myDisplay() 在main中被指定  
+>>初始化函数 Initial()  
+
+>交互回调  
+>>键盘交互 keyBoard()  
+>>鼠标交互 onMouseWheel()  
+
+>主函数 main()  
 
 ### 文法生成代码
+```C++
+//文法生成元
+//F绘制树干，X绘制叶子，AB更改树干参数，+-/*%&坐标变换，[]进出栈
+string grammar1 = "FA[+*&X][-/X][+%X]B";
+string grammar2 = "FA[%-X][&*X][+/X][-*X]B";
+string grammar3 = "FA[-*X][/&X][*%X][+&X]B";
+string treegra;
+
+//根据元生成文法字符串
+string grammarIteration(string grammar, int level)
+{
+	string tempRule = grammar;
+	string rule = {};
+	for (int i = 1; i <= level; i++) // 迭代level次，每次遍历字符串，将X替换为文法生成元
+	{
+		int curlen = tempRule.length();
+		int j = 0;
+		srand((int)time(0));//随机种子
+		while (j < curlen) {
+			if ('X' == tempRule[j]) { // X迭代，替换成文法模型		
+				int n = random(3);
+				//cout << n << endl;
+				if (0 == n) {
+					rule += grammar3;
+				}
+				else if (1 == n) {
+					rule += grammar2;
+				}
+				else if (2 == n) {
+					rule += grammar1;
+				}
+				j++;
+			}
+			else { // 保留	
+				rule += tempRule[j];
+				j++;
+			}
+		}
+		tempRule = rule;
+		rule.clear();
+	}
+	rule = tempRule;
+	return rule;
+}
+```
 
 ### 着色器渲染代码
+**仅渲染生成树部分，然后在绘制回调glutDisplayFunc(&func)的func()中调用grammarDraw(grammar)即可**  
+```C++
+// 绘制树干,用于grammarDraw()
+void drawTree(float baseRadius, float topRadius, float height)
+{
+	GLUquadricObj *tree_obj;
+	tree_obj = gluNewQuadric();//创建二次曲面对象
+	if (tree != 0 && veinState == 1) {
+		glBindTexture(GL_TEXTURE_2D, tree);//绑定纹理
+		gluQuadricTexture(tree_obj, GL_TRUE);
+	}
+	else {
+		glColor3ub(155, 81, 33);//纹理加载失败时代替
+	}
+	gluCylinder(tree_obj, baseRadius, topRadius, height, 30, 30);//绘制
+	glTranslatef(0.0f, 0.0f, height);
+	gluSphere(tree_obj, topRadius, 30, 30);
+	gluDeleteQuadric(tree_obj);
+}
+// 绘制叶子,用于grammarDraw()
+void drawLeaf()
+{
+	if (leaf != 0 && veinState == 1) {
+		glEnable(GL_ALPHA_TEST);
+		glAlphaFunc(GL_GREATER, 0.9f);
+		glBindTexture(GL_TEXTURE_2D, leaf);//绑定纹理
+		glBegin(GL_QUADS);
+		glTexCoord2f(0.0, 0.0); glVertex3f(0, 0, 0);
+		glTexCoord2f(1.0, 0.0); glVertex3f(10, 10, 0);
+		glTexCoord2f(1.0, 1.0); glVertex3f(0, 20, 0);
+		glTexCoord2f(0.0, 1.0); glVertex3f(-10, 10, 0);
+		glEnd();
+		glDisable(GL_ALPHA_TEST);
+	}
+	else {
+		glColor3f(1.0f, 0.0f, 0.0f);//纹理加载失败时代替
+		glBegin(GL_QUADS);
+		glVertex3f(0, 0, 0);
+		glVertex3f(5, 5, 0);
+		glVertex3f(0, 10, 0);
+		glVertex3f(-5, 5, 0);
+		glEnd();
+	}
+}
+// 根据文法绘制分形树
+void grammarDraw(string grammar)
+{
+	float baseRadius = 10, topRadius = 6, height = 200;
+	int i = 0;
+	while (i < grammar.length()) {
+		switch (grammar[i]) {
+			//F绘制树干，X绘制叶子，AB更改树干参数，+-/*%&坐标变换，[]进出栈
+		case'F':drawTree(baseRadius, topRadius, height); break;
+		case'X':drawLeaf(); break;
+		case'A':height *= 0.6; baseRadius *= 0.5; topRadius *= 0.5; break;
+		case'B':height /= 0.6; baseRadius /= 0.5; topRadius /= 0.5; break;
+		case'+':glRotatef(35, 1, 0, 0); break;
+		case'-':glRotatef(-35, 1, 0, 0); break;
+		case'*':glRotatef(35, 0, 1, 0); break;
+		case'/':glRotatef(-35, 0, 1, 0); break;
+		case'%':glRotatef(35, 0, 0, 1); break;
+		case'&':glRotatef(-35, 0, 0, 1); break;
+		case'[':glPushMatrix(); break;
+		case']':glPopMatrix(); break;
+		}
+		i++;
+	}
+}
+```
 
 许可
 ===
