@@ -17,7 +17,7 @@ TODO:
  ![](https://github.com/yaBorn/-OpenGL-Fractal_tree_of_L-System/blob/main/im_md/1.png "深层迭代")
 
 目录
----
+===
 * 运行说明
 * 编写环境
 * 调试说明
@@ -31,7 +31,7 @@ TODO:
 * 许可
 
 运行说明
----
+===
 * 直接下载解压<可执行程序_L分形树.rar>，内有dll，bmp*2，exe，点击exe运行即可。  
 * 下载右侧发布Releases<_L.rar>也可以。 
 
@@ -40,20 +40,20 @@ TODO:
  ![](https://github.com/yaBorn/-OpenGL-Fractal_tree_of_L-System/blob/main/im_md/%E8%A7%86%E8%A7%92.gif "视角")
 
 编写环境
----
+===
 * VStudio 2017 (安装NuGet包管理器)  
 * nupengl.core / nupengl.core.redist [dll下载](https://www.opengl.org/resources/libraries/glut/glutdlls37beta.zip)  
 * [GLUT](https://www.opengl.org/resources/libraries/glut/)  
 
 调试说明
----
+===
 1. 下载<VStudio源工程>，解压。
 2. VS代开根目录sln文件。
 3. 确保freeglut.dll在Debug文件夹内。
 4. 点击源.cpp即为主代码。
 
 运行操作
----
+===
 1. 下载<标识-可执行程序> 或右侧Releases<_L.rar>。  
 2. 解压后，dll、bmp*2、exe文件处于同一程序目录下。  
 3. 点击exe运行。  
@@ -61,7 +61,7 @@ TODO:
 5. 命令行窗口有操作说明。  
 
 操作说明
----
+===
   1 - 重新生成5迭代树     2 - 打开网线    3 - 打开纹理         4 - 减少迭代次数     5 - 增加迭代次数  
   q - 返回初始机位                   e - 切换投影方式  
                      w - 前移  
@@ -72,7 +72,7 @@ TODO:
 
 
 效果
----
+===
 1. 旋转视角，无透视模式下查看分形树的整体。  
 2. 按下e，切换至透视模式，w/s可前进后退查看分形树的细节。  
 3. 大键盘3，打开/关闭纹理。  
@@ -82,10 +82,11 @@ TODO:
    **深度>8，可能导致性能下降**(因为迭代复杂规模n^2)  
 
 代码说明
----
+===
 ### TODO: CPP代码整理
 核心代码在<code.cpp>
-**一股脑**把文法生成代码+渲染器绘制代码+输入交互代码放一起了。比较冗杂。
+**一股脑**把bmp纹理加载代码+文法生成代码+渲染器绘制代码+输入交互代码放一起了。  
+导致code.cpp比较冗杂。有时间分割掉。  
 
 ### 思路
 1. 使用了以前图形学的代码_读取bmp生成纹理。  
@@ -108,6 +109,6 @@ TODO:
 ### 着色器渲染代码
 
 许可
----
+===
 本项目使用 Apache 2.0 license.<br>
 更多关于**许可**和**致谢**, 请参见 [LICENSE](LICENSE).
