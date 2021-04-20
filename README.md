@@ -38,7 +38,7 @@ TODO:
 编写环境
 ---
 * VStudio 2017  
-* nupengl.core / nupengl.core.redist  
+* nupengl.core / nupengl.core.redist [dll下载]([https://www.opengl.org/resources/libraries/glut/glutdlls37beta.zip])  
 * [GLUT](https://www.opengl.org/resources/libraries/glut/)  
 
 调试说明
