@@ -47,4 +47,4 @@ TODO:
 许可
 ---
 本项目使用 Apache 2.0 license.<br>
-更多关于**许可**和**致谢**, 请参见 [LICENSE](LICENSE/README.md).
+更多关于**许可**和**致谢**, 请参见 [LICENSE](LICENSE).
