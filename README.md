@@ -1,4 +1,4 @@
-# OpenGL-Fractal_tree_of_L-System
+# Fractal_tree_of_L-System
 【C++/OpenGL】基于L系统随机文法元的分形树
 ===
 转载与调用请保留并注释原作者yaBorn的原文地址：https://github.com/yaBorn/-OpenGL-Fractal_tree_of_L-System
