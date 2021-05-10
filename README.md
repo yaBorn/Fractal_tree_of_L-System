@@ -33,7 +33,7 @@ TODO:
 ===
 * 直接下载解压<可执行程序_L分形树.rar>，内有dll，bmp*2，exe，点击exe运行即可。  
 * 下载右侧发布Releases<_L.rar>也可以。 
-* 若提示找不到 msvcp140d.dll / ucrtbased.dll / vcruntime140d.dll，将对应dll下载置于根目录即可
+* 若提示找不到 msvcp140d.dll / ucrtbased.dll / vcruntime140d.dll，将对应dll下载置于根目录即可。
 
 此处应有动图*2(可能未显示，图片在<im_rd>中)    
  ![](https://github.com/yaBorn/-OpenGL-Fractal_tree_of_L-System/blob/main/im_md/%E5%88%87%E6%8D%A2%E6%96%87%E6%B3%95.gif "切换迭代文法")
